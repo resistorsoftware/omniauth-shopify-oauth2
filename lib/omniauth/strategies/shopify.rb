@@ -29,16 +29,21 @@ module OmniAuth
       end
 
       def valid_signature?
+
+        puts "request.POST: #{request.POST}"
         return false unless request.POST.empty?
 
         params = request.GET
         signature = params['hmac']
         timestamp = params['timestamp']
+        puts "Signature: '#{signature}', timestamp: #{timestamp}"
         return false unless signature && timestamp
 
+        puts "Starting timestamp calculations..."
         return false unless timestamp.to_i > Time.now.to_i - CODE_EXPIRES_AFTER
-
+        puts "Passed the timestamp calculations..."
         calculated_signature = self.class.hmac_sign(self.class.encoded_params_for_signature(params), options.client_secret)
+        puts "Calculated signature... #{calculated_signature}"
         Rack::Utils.secure_compare(calculated_signature, signature)
       end
 
