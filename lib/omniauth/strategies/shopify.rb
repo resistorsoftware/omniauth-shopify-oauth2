@@ -30,10 +30,11 @@ module OmniAuth
 
       def valid_signature?
 
-        puts "request.POST: #{request.POST}"
+        puts "request: #{request.inspect}"
         return false unless request.POST.empty?
 
         params = request.GET
+        puts "GET: #{params.inspect}"
         signature = params['hmac']
         timestamp = params['timestamp']
         puts "Signature: '#{signature}', timestamp: #{timestamp}"
