@@ -25,6 +25,7 @@ module OmniAuth
       uid { URI.parse(options[:client_options][:site]).host }
 
       def valid_site?
+        puts "valid site: domain: #{options[:myshopify_domain]}, site: #{options[:client_options][:site]}"
         !!(/\A(https|http)\:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]*\.#{Regexp.quote(options[:myshopify_domain])}[\/]?\z/ =~ options[:client_options][:site])
       end
 
@@ -49,6 +50,7 @@ module OmniAuth
       end
 
       def self.encoded_params_for_signature(params)
+        puts "encoded params: #{params.inspect}"
         params = params.dup
         params.delete('hmac')
         params.delete('signature') # deprecated signature
@@ -72,6 +74,7 @@ module OmniAuth
         if valid_site?
           super
         else
+          puts "Failed in the request phase as an invalid site..."
           fail!(:invalid_site)
         end
       end
