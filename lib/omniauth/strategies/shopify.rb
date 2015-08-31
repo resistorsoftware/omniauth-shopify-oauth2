@@ -71,6 +71,7 @@ module OmniAuth
       end
 
       def request_phase
+        puts "Request Phase: #{request.inspect}"
         if valid_site?
           super
         else
@@ -80,6 +81,7 @@ module OmniAuth
       end
 
       def callback_phase
+        puts "Callback Phase: #{request.inspect}"
         return fail!(:invalid_site) unless valid_site?
         return fail!(:invalid_signature) unless valid_signature?
         super
